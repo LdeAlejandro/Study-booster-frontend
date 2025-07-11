@@ -7,6 +7,8 @@ const axios = require("axios");
 function createWindow() {
   const win = new BrowserWindow({
     useContentSize: true,
+    autoHideMenuBar: true,
+    title: "QBit",
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
     },
@@ -40,7 +42,7 @@ function showNotificationWindow(data) {
     resizable: false,
     x: screenX + screenWidth - notifWidth,
     y: screenY + screenHeight - notifHeight,
-    title: "",
+    title: "QBit",
 
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),

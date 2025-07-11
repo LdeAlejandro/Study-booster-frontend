@@ -4,9 +4,12 @@ import styles from "./style.module.css";
 import axios from "axios";
 
 export default function App() {
-  const [preferences, setPreferences] = useState([]);
 
+  // Preferences
+  const [preferences, setPreferences] = useState([]);
+    //update preferences
   useEffect(() => {
+
     axios
       .get("http://localhost:8080/preferences")
       .then((response) => {
@@ -17,6 +20,23 @@ export default function App() {
         console.error("Error fetching preferences:", error);
       });
   }, []);
+
+  // Pagination and modules
+    const [subjects, setSubjects] = useState([]);
+     const [page, setPage] = useState(0);
+    const [totalPages, setTotalPages] = useState(1);
+
+  useEffect(() => {
+    axios.get(`http://localhost:8080/subjects?page=${page}&size=10`)
+      .then(response => {
+        const content = response.data.content || [];
+        setSubjects(content);
+        setTotalPages(response.data.totalPages);
+      })
+      .catch(error => {
+        console.error("Failed to fetch subjects:", error);
+      });
+  }, [page]);
 
   // update preferences
   const updatePreference = (index, updatedField) => {
@@ -65,7 +85,7 @@ export default function App() {
         <p className={styles.upTo3}>Up to 3</p>
         {preferences.map((pref, index) => (
           <div key={index} className={styles.row}>
-            <label>Subject</label>
+            <label>Topic</label>
             <datalist id={`subjects-${index}`}>
               <option className={styles.subjectButton} value={pref.subjectName}>
                 {pref.subjectName}
@@ -105,6 +125,24 @@ export default function App() {
             </select>
           </div>
         ))}
+      </div>
+      
+      <div className={styles.grid}>
+        {subjects.map(subject => (
+          <button key={subject.id} className={styles.subjectButton}>
+            {subject.subjectName}
+          </button>
+        ))}
+      </div>
+
+      <div className={styles.pagination}>
+        <button onClick={() => setPage(p => Math.max(p - 1, 0))} disabled={page === 0}>
+          ⬅ Prev
+        </button>
+        <span>Page {page + 1} of {totalPages}</span>
+        <button onClick={() => setPage(p => Math.min(p + 1, totalPages - 1))} disabled={page + 1 === totalPages}>
+          Next ➡
+        </button>
       </div>
     </div>
   );

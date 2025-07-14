@@ -1,9 +1,16 @@
-import React from "react";
 import { useEffect, useState } from "react";
 import styles from "./style.module.css";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
 
 export default function App() {
+
+
+   const backendUrl = import.meta.env.VITE_BACKEND_BASE_URL;
+
+  //navigation
+  const navigate = useNavigate();
 
   // Preferences
   const [preferences, setPreferences] = useState([]);
@@ -11,7 +18,7 @@ export default function App() {
   useEffect(() => {
 
     axios
-      .get("http://localhost:8080/preferences")
+      .get(`${backendUrl}/preferences`)
       .then((response) => {
         setPreferences(response.data);
      
@@ -19,15 +26,15 @@ export default function App() {
       .catch((error) => {
         console.error("Error fetching preferences:", error);
       });
-  }, []);
+  },[preferences, backendUrl] );
 
-  // Pagination and modules
+  // Pagination and subjects  
     const [subjects, setSubjects] = useState([]);
      const [page, setPage] = useState(0);
     const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
-    axios.get(`http://localhost:8080/subjects?page=${page}&size=10`)
+    axios.get(`${backendUrl}/subjects?page=${page}&size=10`)
       .then(response => {
         const content = response.data.content || [];
         setSubjects(content);
@@ -36,7 +43,7 @@ export default function App() {
       .catch(error => {
         console.error("Failed to fetch subjects:", error);
       });
-  }, [page]);
+  },);
 
   // update preferences
   const updatePreference = (index, updatedField) => {
@@ -59,7 +66,7 @@ export default function App() {
     // update on the server
     console.log(updatePref);
     axios
-      .put(`http://localhost:8080/preferences`, updatePref)
+      .put(`${import.meta.env.VITE_BACKEND_BASE_URL}/preferences`, updatePref)
       .then(() => console.log("Preference updated:", updatePref))
       .catch((error) => console.error("Failed to update preference", error));
   };
@@ -129,12 +136,13 @@ export default function App() {
       
       <div className={styles.grid}>
         {subjects.map(subject => (
-          <button key={subject.id} className={styles.subjectButton}>
+          <button key={subject.id} className={styles.subjectButton} onClick={() => navigate(`/subject/${subject.id}/`)}>
             {subject.subjectName}
           </button>
         ))}
       </div>
 
+      {totalPages > 1 && (
       <div className={styles.pagination}>
         <button onClick={() => setPage(p => Math.max(p - 1, 0))} disabled={page === 0}>
           ⬅ Prev
@@ -144,6 +152,7 @@ export default function App() {
           Next ➡
         </button>
       </div>
+      )}
     </div>
   );
 }

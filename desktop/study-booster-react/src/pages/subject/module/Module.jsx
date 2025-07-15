@@ -45,7 +45,12 @@ const Subject = () => {
   }, [page, subjectId, parentId, backendUrl]);
 
   return (
+    
     <div className={styles.container}>
+      <div className={styles.headerButtons}>
+      <button onClick={() => navigate(-1)} className={styles.backButton}>🔙 Back</button>
+      <button onClick={() => navigate("/")} className={styles.homeButton}>🏠 Home</button>
+    </div>
       <h1 className={styles.title}>Modules</h1>
       <p className={styles.subtitle}>Choose your module</p>
       <div className={styles.grid}>
@@ -55,7 +60,7 @@ const Subject = () => {
             className={styles.subjectButton}
             onClick={() =>
               navigate(
-                `/subject/${subjectId}/module/parent?parentId=${module.id}&page=0&size=1}`
+                `/subject/${subjectId}/module/parent?parentId=${module.id}&page=0&size=10`
               )
             }
           >

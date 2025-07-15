@@ -61,3 +61,25 @@
   cursor: pointer;
 }
 
+.headerButtons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.backButton,
+.homeButton {
+  background-color: #44475a;
+  color: #f8f8f2;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.backButton:hover,
+.homeButton:hover {
+  background-color: #6272a4;
+}

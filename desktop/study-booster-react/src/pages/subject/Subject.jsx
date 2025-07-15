@@ -34,7 +34,11 @@ const Subject = () => {
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>Modulesasdsadasdsa</h1>
+      <div className={styles.headerButtons}>
+      <button onClick={() => navigate(-1)} className={styles.backButton}>🔙 Back</button>
+      <button onClick={() => navigate("/")} className={styles.homeButton}>🏠 Home</button>
+    </div>
+      <h1 className={styles.title}>Modules</h1>
             <p className={styles.subtitle}>Choose your module</p>
         <div className={styles.grid}>
               {modules.map(module => (

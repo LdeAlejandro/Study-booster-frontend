@@ -5,6 +5,7 @@ const query = new URLSearchParams(window.location.search);
 const data = JSON.parse(query.get('data') || '{}');
 
 export default function Notification() {
+
   return (
     
   <div className={styles.container}>
@@ -14,13 +15,16 @@ export default function Notification() {
       </div>
 
       <button
-        className={styles.button}
-        onClick={() => {
-          window.close(); // Fecha a notificação
-        }}
-      >
-        Responder agora
-      </button>
+  className={styles.button}
+  onClick={() => {
+    window.electron?.sendNavigateTo(
+      `/SingleQuestion?data=${encodeURIComponent(JSON.stringify(data))}`
+    );
+    window.close(); // Fecha o popup
+  }}
+>
+  Responder agora
+</button>
     </div>
 );
-}
+} 

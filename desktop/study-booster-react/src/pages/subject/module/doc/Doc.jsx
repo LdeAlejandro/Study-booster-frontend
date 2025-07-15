@@ -2,8 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import MDEditor from "@uiw/react-md-editor";
 import styles from "./style.module.css";
+import { useNavigate } from "react-router-dom";
 
 export default function Doc() {
+
+  const navigate = useNavigate();
   const { moduleId, docId } = useParams();
   const backendUrl = import.meta.env.VITE_BACKEND_BASE_URL;
 
@@ -66,6 +69,10 @@ export default function Doc() {
 
   return (
     <div className={styles.container}>
+       <div className={styles.headerButtons}>
+      <button onClick={() => navigate(-1)} className={styles.backButton}>🔙 Back</button>
+      <button onClick={() => navigate("/")} className={styles.homeButton}>🏠 Home</button>
+    </div>
       <h1 className={styles.title}>{doc.title}</h1>
 
      <MDEditor

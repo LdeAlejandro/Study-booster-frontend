@@ -6,7 +6,7 @@ import styles from "./style.module.css";
 const Subject = () => {
 
    const backendUrl = import.meta.env.VITE_BACKEND_BASE_URL;
-  // Get the subjectId and depth from the URL parameters declare in the router
+  // Get the subjectId from the URL parameters declare in the router
   const { subjectId } = useParams();
 
   //get params from current url
@@ -17,6 +17,8 @@ const Subject = () => {
 
   // api data store
   const [modules, setModules] = useState([]);
+  const [currentModule, setCurrentModule] = useState(null);
+  // pagination
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
   const [docs, setDocs] = useState([]);
@@ -32,6 +34,7 @@ const Subject = () => {
         const content = response.data.content || [];
         setModules(content);
         console.log(content);
+        setCurrentModule(content.length > 0 ? content[0].id : null); // set current module id
         setDocs(content.length > 0 && content[0].docs?.length > 0 ? content[0].docs : []); // check if this module has docs
         setHasQuestions(content.length > 0 && content[0].questionIds?.length > 0); // check if this module has questions
         setTotalPages(response.data.totalPages);
@@ -68,7 +71,7 @@ const Subject = () => {
               <button
                 key={doc.id}
                 className={styles.subjectButton}
-                onClick={() => navigate(`/subject/`)}
+                onClick={() => navigate(`/subject/${subjectId}/module/${currentModule}/doc/${doc.id}`)}
               >
                 Doc {doc.title}
               </button>
@@ -81,7 +84,7 @@ const Subject = () => {
           <div className={styles.grid}>
             <button
               className={styles.subjectButton}
-              onClick={() => navigate(`/subject/`)}>
+              onClick={() => navigate(`/subject/${subjectId}/module/${currentModule}/question`)}>
                 Questions
             </button>
           </div>

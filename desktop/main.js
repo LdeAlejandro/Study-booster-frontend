@@ -89,7 +89,7 @@ function startBackgroundLoop() {
           //update interval
           await axios.put("http://localhost:8080/preferences", {
             id: pref.id,
-            label: pref.label,
+            moduleName: pref.moduleName,
             interval: pref.stringInterval, // enum esperado pelo backend
             subjectId: pref.subjectId,
             moduleId: pref.moduleId,
